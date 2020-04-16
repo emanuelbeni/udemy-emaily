@@ -14,18 +14,17 @@ passport.use(
 			callbackURL: "/auth/google/callback",
 			proxy: true,
 		},
-		(accessToken, refreshToken, profile, done) => {
+		async (accessToken, refreshToken, profile, done) => {
 			// Check if user exists in our DB
-			User.findOne({ googleId: profile.id }).then((existingUser) => {
-				if (!existingUser) {
-					//User doesnt exist in our MongoDB
-					new User({ googleId: profile.id }).save().then((user) => {
-						done(null, user);
-					});
-				}
-				//User exists in our DB, return user and end the auth process
-				done(null, existingUser);
-			});
+			const existingUser = await User.findOne({ googleId: profile.id });
+
+			if (!existingUser) {
+				//User doesnt exist in our MongoDB
+				const user = await new User({ googleId: profile.id }).save();
+				return done(null, user);
+			}
+			//User exists in our DB, return user and end the auth process
+			done(null, existingUser);
 		}
 	)
 );
