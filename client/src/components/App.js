@@ -3,14 +3,15 @@ import { connect } from "react-redux";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import HeaderNavigation from "../components/HeaderNavigation";
 import { fetchUser } from "../actions";
+import Landing from "./Landing";
 
-const Landing = () => <div>Landing</div>;
 const Dashboard = () => <div>Dashboard</div>;
 const SurveyNew = () => <div>SurveyNew</div>;
 
 export class App extends Component {
 	componentDidMount() {
 		this.props.fetchUser();
+		console.log(this.props);
 	}
 
 	render() {
@@ -29,7 +30,9 @@ export class App extends Component {
 }
 
 const mapStateToProps = (state) => {
-	return {};
+	return {
+		auth: state.auth,
+	};
 };
 
-export default connect(null, { fetchUser })(App);
+export default connect(mapStateToProps, { fetchUser })(App);

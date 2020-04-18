@@ -1,40 +1,45 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import Payments from "./Payments";
 
 export class HeaderNavigation extends Component {
 	renderHeaderMenu = () => {
-		// Temp var
-		const isSignedIn = true;
-		if (isSignedIn) {
-			// User is signedIn
-			return (
-				<div>
-					<Link className='nav-item mx-3' to='/'>
-						Home
-					</Link>
-					<Link className='nav-item mx-3' to='/surveys'>
-						Survey
-					</Link>
-					<Link className='nav-item mx-3' to='/'>
-						Logout
-					</Link>
-				</div>
-			);
-		} else {
-			return (
-				<div>
-					<Link className='nav-item mx-3' to='/'>
-						Login With Google
-					</Link>
-				</div>
-			);
+		switch (this.props.auth) {
+			case null:
+				return <div>Loading...</div>;
+			case false:
+				return (
+					<>
+						<li className='nav-link mx-3'>
+							<a href='/auth/google'>Login With Google</a>
+						</li>
+					</>
+				);
+			default:
+				return (
+					<>
+						<li className='nav-item mx-3'>
+							<Payments />
+						</li>
+						<li className='nav-link mx-3'>Credit: {this.props.auth.credits}</li>
+						<li className='nav-link mx-3'>
+							<Link to='/surveys'>Survey</Link>
+						</li>
+						<li className='nav-link mx-3'>
+							<a href='/api/logout'>Logout</a>
+						</li>
+					</>
+				);
 		}
 	};
 
 	render() {
 		return (
 			<nav className='navbar navbar-expand-lg navbar-light bg-light'>
-				<a className='navbar-brand'>emaily</a>
+				<Link to={this.props.auth ? "/surveys" : "/"} className='navbar-brand'>
+					emaily
+				</Link>
 				<button
 					className='navbar-toggler'
 					type='button'
@@ -54,4 +59,10 @@ export class HeaderNavigation extends Component {
 	}
 }
 
-export default HeaderNavigation;
+const mapStateToProps = (state) => {
+	return {
+		auth: state.auth,
+	};
+};
+
+export default connect(mapStateToProps, null)(HeaderNavigation);

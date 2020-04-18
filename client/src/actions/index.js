@@ -1,14 +1,24 @@
 import axios from "axios";
-import { SIGN_IN, SIGN_OUT, FETCH_USER } from "../actionTypes";
+import { FETCH_USER } from "../actionTypes";
 
 export const fetchUser = () => {
-	console.log("fetchUser called");
-	return function (dispatch) {
-		axios.get("/api/current_user").then((res) =>
-			dispatch({
-				type: FETCH_USER,
-				payload: res,
-			})
-		);
+	return async (dispatch) => {
+		const response = await axios.get("/api/current_user");
+
+		return dispatch({
+			type: FETCH_USER,
+			payload: response.data,
+		});
+	};
+};
+
+export const handleToken = (token, amount) => {
+	return async (dispatch) => {
+		const response = await axios.post("/api/stripe", { token, amount });
+
+		return dispatch({
+			type: FETCH_USER,
+			payload: response.data,
+		});
 	};
 };
