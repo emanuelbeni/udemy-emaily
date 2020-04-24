@@ -1,4 +1,4 @@
-import { SIGN_IN, SIGN_OUT, FETCH_USER } from "../actionTypes";
+import { FETCH_USER } from "../actionTypes";
 
 // Auth reducer
 export default (state = null, action) => {

@@ -5,7 +5,9 @@ import { applyMiddleware, createStore } from "redux";
 import ReduxThunk from "redux-thunk";
 import reducers from "./reducers";
 import App from "./components/App";
+import axios from "axios";
 
+window.axios = axios;
 const store = createStore(reducers, {}, applyMiddleware(ReduxThunk));
 
 ReactDOM.render(
@@ -14,6 +16,3 @@ ReactDOM.render(
 	</Provider>,
 	document.getElementById("root")
 );
-
-console.log("STRIPE KEY ", process.env.REACT_APP_STRIPE_KEY);
-console.log("Environment is  ", process.env.NODE_ENV);

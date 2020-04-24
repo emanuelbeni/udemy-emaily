@@ -4,14 +4,12 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import HeaderNavigation from "../components/HeaderNavigation";
 import { fetchUser } from "../actions";
 import Landing from "./Landing";
-
-const Dashboard = () => <div>Dashboard</div>;
-const SurveyNew = () => <div>SurveyNew</div>;
+import Dashboard from "./Dashboard";
+import SurveyNew from "./surveys/SurveyNew";
 
 export class App extends Component {
 	componentDidMount() {
 		this.props.fetchUser();
-		console.log(this.props);
 	}
 
 	render() {
